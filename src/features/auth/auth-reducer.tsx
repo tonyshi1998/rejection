@@ -1,3 +1,22 @@
+/* TDD (Test Driven Development)
+=
+you write the test before the code
+
+advantages:
+- makes the development process more like the scientific approach
+- reduces bug density in a team from 30% to 80%
+- increases your development speed by 30% in the long term
+- it gives you documentation
+- instant feedback (which eliminates fear of change)
+- teaches you how to write more modular code
++ if you see famous developers like (Kent C. Dodd) you're going to notice they use TDD as well
+
+
+problem:
+- in the beginning you MAY think that you're going slower. But you're actually going faster
+
+*/
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store/store";
 

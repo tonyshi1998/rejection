@@ -1,13 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AuthActions, selectIsLogged } from "../features/auth/auth-reducer";
+import QuestionForm from "../features/question-form/question-form";
 
-export default function Home() {
+export const HomePage = () => {
   // is this page connected to redux?
   const isLogged = useSelector(selectIsLogged);
 
   return (
-    <div className="bg-red-300 px-2">
-      <h1 className="px-10 bg-green-500">Hello world</h1>
+    <div className="">
+      <div data-testid="title">
+        <h1>Rejection App!</h1>
+      </div>
+      <QuestionForm></QuestionForm>
     </div>
   );
-}
+};
+
+export default HomePage;
