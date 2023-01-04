@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { AppDispatch, RootState } from "../../store/store";
 import { connect, ConnectedProps } from "react-redux";
+import { Question, questionsActions, QuestionStatus } from "../questions/questions-reducer";
 
 const mapStateToProps = (state: RootState) => ({});
 
-const mapDispatchToProps = (dispatch: AppDispatch) => ({});
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+  addQuestion: (question: Question) => dispatch(questionsActions.addQuestion({question}))
+});
 
 const Container = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof Container>;
@@ -20,17 +23,28 @@ Question {
 
 */
 
-export const QuestionForm = ({}: Props) => {
+export const QuestionForm = ({addQuestion}: Props) => {
   const [question, setQuestion] = useState("");
   const [askee, setAskee] = useState("");
   const [status, setStatus] = useState("");
 
   const submitHander = (e) => {
     e.preventDefault();
-    console.log("form info:");
-    console.log(question);
-    console.log(askee);
-    console.log(status);
+   
+    if (!question || !askee) return;
+
+
+    addQuestion({
+      question,
+      askee,
+      status: QuestionStatus.Rejected,
+      timestamp: new Date().getTime()
+
+    })
+    setQuestion('')
+    setAskee('')
+    setStatus(QuestionStatus.Unanswered)
+
   };
 
   return (

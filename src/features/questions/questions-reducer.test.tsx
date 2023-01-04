@@ -1,10 +1,13 @@
+import { timeStamp } from "console";
 import { makeStore } from "../../store/store";
 import { assert } from "../../test/test-utils";
+import { createQuestion } from "../test/test-factories";
 import {
   Question,
   questionsActions,
   QuestionStatus,
   selectQuestions,
+  selectScore,
 } from "./questions-reducer";
 
 // const QUESTION: Question = {
@@ -21,30 +24,6 @@ import {
 //   timestamp: 9876543,
 // };
 
-const createQuestion = (
-  {
-    status,
-    question,
-    askee,
-    timestamp,
-  }: {
-    status?: QuestionStatus;
-    question?: string;
-    askee?: string;
-    timestamp?: number;
-  } = {
-    status: QuestionStatus.Accepted,
-    question: "question",
-    askee: "askee",
-    timestamp: Math.random() * 1e6,
-  }
-) =>
-  ({
-    status,
-    question,
-    askee,
-    timestamp,
-  } as Question);
 
 // const question = createQuestion();
 // const question2 = createQuestion({status: QuestionStatus.Rejected})
@@ -114,4 +93,41 @@ describe("questions-reducer", () => {
       expect(questions).toMatchObject([]);
     },
   });
+
+  assert({
+    given: "a set of questions",
+    should: "return correct score of questions",
+    test: () =>{
+      const store = makeStore();
+      const question1 = createQuestion({status:QuestionStatus.Accepted})
+      const question2 = createQuestion({status:QuestionStatus.Rejected})
+      const question3 = createQuestion({status:QuestionStatus.Unanswered})
+
+      store.dispatch(questionsActions.addQuestion({question: question1}))
+      store.dispatch(questionsActions.addQuestion({question: question2}))
+      store.dispatch(questionsActions.addQuestion({question: question3}))
+
+      const score = selectScore(store.getState());
+      expect(score).toBe(11)
+    }
+  });
+  assert({
+    given: "A question and a status",
+    should: "Update the question",
+    test: () => {
+      const store = makeStore();
+      const question = createQuestion({status:QuestionStatus.Rejected});
+      console.log(`Just created question ${question} with timestamp ${question.timestamp}`)
+      store.dispatch(questionsActions.addQuestion({ question }));
+
+
+      const newStatus = QuestionStatus.Accepted
+      store.dispatch(questionsActions.updateStatus({questionTimestamp: question.timestamp, newStatus}));
+      const questions = selectQuestions(store.getState());
+      expect(questions[0].status).toBe(newStatus);
+
+
+    },
+  });
 });
+
