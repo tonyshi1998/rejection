@@ -48,8 +48,8 @@ export const QuestionForm = ({addQuestion}: Props) => {
   };
 
   return (
-    <form onSubmit={submitHander}>
-      <div>
+    <form onSubmit={submitHander} className="p-2 mr-2 mt-5 mb-10 border border-black ml-2 justify-content: center">
+      <div className=" mt-2">
         <label>Question</label>
         <input
           data-testid="question-input"
@@ -79,7 +79,7 @@ export const QuestionForm = ({addQuestion}: Props) => {
           <option value="rejected">rejected</option>
         </select>
       </div>
-      <input data-testid="submit-input" type="submit" value="Sumbit"></input>
+      <input data-testid="submit-input" type="submit" value="Sumbit" className="mt-2 p-2 bg-green-500"></input>
     </form>
   );
 };

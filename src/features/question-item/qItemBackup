@@ -30,28 +30,28 @@ Question {
 */
 
 export const QuestionItem = ({ question, updateQuestion }: Props) => {
-  const updateStatusHandler = (newStatus: QuestionStatus) => {};
+  const updateStatusHandler = (newStatus: QuestionStatus) => {
+
+  };
 
   return (
-    <tr className="text-center">
-      <td data-testid="question-content">{question.question}</td>
+    <div>
+     
+      <div data-testid="question-content">{question.question}</div>
 
-      <td className="flex justify-center" data-testid="question-status">
+      <div className="flex justify-center" data-testid="question-status">
         {question.status}
-      </td >
-      <td data-testid="question-askee">{question.askee}</td>
-      <td data-testid="actions">
-        <button
-          className="mr-2"
-          onClick={() => updateStatusHandler(QuestionStatus.Accepted)}
-        >
+      </div>
+      <div data-testid="question-askee">{question.askee}</div>
+      <div data-testid="actions" className="flex">
+        <button className="" onClick={() => updateStatusHandler(QuestionStatus.Accepted)}>
           Accept
         </button>
         <button onClick={() => updateStatusHandler(QuestionStatus.Rejected)}>
           Reject
         </button>
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 };
 

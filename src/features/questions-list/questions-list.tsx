@@ -26,13 +26,16 @@ Question {
 
 export const QuestionsList = ({ questions }: Props) => {
   return (
-    <div>
-      <div className=" flex flex-row justify-between flex-wrap">
-        <div>Question</div>
-        <div>Status</div>
-        <div>Askee</div>
-      </div>
-      <div data-testid="questions-list">
+    <table data-testid="questions-list" className="class= w-full mb-2">
+      <thead>
+        <tr>
+          <th>Question</th>
+          <th>Status</th>
+          <th>Askee</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
         {questions.map((question) => (
           <QuestionItem
             question={question}
@@ -41,8 +44,8 @@ export const QuestionsList = ({ questions }: Props) => {
           ></QuestionItem>
           //<div key={question.timestamp} data-timestamp={question.timestamp}>{JSON.stringify(question)}</div>
         ))}
-      </div>
-    </div>
+      </tbody>
+    </table>
   );
 };
 

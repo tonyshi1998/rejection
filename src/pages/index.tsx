@@ -10,7 +10,7 @@ export const HomePage = () => {
 
   return (
     <div className="">
-      <div data-testid="title">
+      <div data-testid="title" className="ml-2">
         <h1>Rejection App!</h1>
       </div>
       <QuestionForm></QuestionForm>
