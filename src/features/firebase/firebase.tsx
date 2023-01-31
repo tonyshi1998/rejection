@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore"; 
 
 // import {service} from 'firebase/service'
 // TODO: Add SDKs for Firebase products that you want to use
@@ -23,9 +24,25 @@ const firebaseConfig = {
 // export const fbApp = initializeApp(firebaseConfig);
 // export const fbAnalytics = getAnalytics(fbApp);
 // export const fbAuth = getAuth(fbApp);
+let firebase: any;
 
 export const initializeFb = () => {
     if (typeof window === 'undefined') return;
-    return initializeApp(firebaseConfig);
+    firebase = initializeApp(firebaseConfig);
+    return firebase;
 
+}
+
+export const getFbAuth = () => {
+  if (typeof window === 'undefined') return;
+  if (!firebase) initializeFb();
+  return getAuth(firebase);
+
+}
+
+export const getFbFirestore = () =>{
+  if (typeof window === 'undefined') return;
+  if(!firebase) initializeFb();
+  // Initialize Cloud Firestore and get a reference to the service
+  return getFirestore(firebase);
 }

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../store/store";
 
 export enum QuestionStatus {
@@ -8,6 +8,22 @@ export enum QuestionStatus {
 }
 
 // export type QuestionStatus = "Accepted" |  "Rejected"
+
+const pushQuestion = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+  "data/fetch",
+  
+  async () => {
+    debugger;
+    // TODO: push question to firestore
+    const response = await fetch("https://api.example.com/data");
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    return response.json();
+  }
+);
+
+
 
 export type Question = {
   status: QuestionStatus;
@@ -28,6 +44,16 @@ export const slice = createSlice({
   name: "questions",
   initialState,
   reducers: {
+    // updateQuestion updates using the questions from Firebase
+
+    updateQuestions: (
+      state,
+      action: PayloadAction<{ questions: Question[] }>
+    ) => {
+      const { questions } = action.payload;
+      state.questions = questions;
+    },
+
     addQuestion: (state, action: PayloadAction<{ question: Question }>) => {
       const { question } = action.payload;
       // const newState = {
@@ -56,16 +82,26 @@ export const slice = createSlice({
       const { questionTimestamp, newStatus } = action.payload;
       // "" => ``
       // {} => ${}
-      console.log(`recieved questionTimestamp ${questionTimestamp} and newStatus ${newStatus}`)
+      console.log(
+        `recieved questionTimestamp ${questionTimestamp} and newStatus ${newStatus}`
+      );
       state.questions = state.questions.map((question) =>
         question.timestamp === questionTimestamp
           ? { ...question, status: newStatus }
           : question
       );
 
-      console.log(state.questions)
+      console.log(state.questions);
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(pushQuestion.fulfilled, (state, action) => {
+      // extracts question from action payload
+      const { question } = action.payload;
+      // adds question to state
+      state.questions.push(question);
+    });
+  }
 });
 
 const questionsReducer = slice.reducer;
@@ -120,3 +156,9 @@ export const selectScore = (state: RootState) => {
 };
 
 /// [1, 2, 3] => map => []
+
+// you need to create an async thunk that will receive one question
+// it will hit firestore database and add the question to the database
+// if it succeeds, it will dispatch the addQuestion action
+// if it fails, it won't do anything
+

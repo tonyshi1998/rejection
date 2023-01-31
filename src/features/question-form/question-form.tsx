@@ -33,6 +33,9 @@ export const QuestionForm = ({addQuestion}: Props) => {
    
     if (!question || !askee) return;
 
+    // add the question to the store and firebase
+
+    questionsActions.
 
     addQuestion({
       question,
